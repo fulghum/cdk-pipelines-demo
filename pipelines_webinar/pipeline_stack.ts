@@ -42,28 +42,6 @@ export class PipelineStack extends Stack {
             synthAction
         });
 
-        // Pre-prod
-        //
-        const preProdApp = new WebServiceStage(this, 'Pre-Prod');
-        const preProdStage = pipeline.addApplicationStage(preProdApp);
-        const serviceUrl = pipeline.stackOutput(preProdApp.urlOutput);
-
-        preProdStage.addActions(new ShellScriptAction({
-            actionName: 'IntegrationTests',
-            runOrder: preProdStage.nextSequentialRunOrder(),
-            additionalArtifacts: [
-                sourceArtifact
-            ],
-            commands: [
-                'npm i',
-                'npm run build',
-                'npm run integration'
-            ],
-            useOutputs: {
-                SERVICE_URL: serviceUrl
-            }
-        }));
-
         // Prod
         //
         const prodApp = new WebServiceStage(this, 'Prod');
