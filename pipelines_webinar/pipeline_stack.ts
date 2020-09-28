@@ -42,6 +42,14 @@ export class PipelineStack extends Stack {
             synthAction
         });
 
+        // Pre-Prod
+
+        const preprodApp = new WebServiceStage(this, "PreProd");
+        const preprodStage = pipeline.addApplicationStage(preprodApp);
+        preprodStage.addManualApprovalAction({
+            actionName: "MyManualApprovalAction"
+        })
+
         // Prod
         //
         const prodApp = new WebServiceStage(this, 'Prod');
